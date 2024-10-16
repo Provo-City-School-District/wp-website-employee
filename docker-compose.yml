@@ -20,7 +20,7 @@ services:
       dockerfile: ./Dockerfile
       context: .
     ports:
-      - 8096:80
+      - 8100:80
     restart: always
     env_file: .env
     environment:
