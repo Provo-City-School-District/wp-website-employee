@@ -28,7 +28,7 @@ services:
       WORDPRESS_DB_HOST: employee_db
       WORDPRESS_DB_USER: $MYSQL_USER
       WORDPRESS_DB_PASSWORD: $MYSQL_PASSWORD
-      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_TABLE_PREFIX: emp_
       WORDPRESS_CONFIG_EXTRA: |
         define( 'JETPACK_SIGNATURE__HTTPS_PORT', 0 );
         define( 'MEDIA_TRASH', true );
