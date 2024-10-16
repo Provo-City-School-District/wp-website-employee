@@ -1,0 +1,57 @@
+services:
+  #Database
+  employee_db:
+    image: mariadb:11.3.2
+    volumes:
+      - ./db_data:/var/lib/mysql
+    ports:
+      - 3334:3306
+    restart: always
+    env_file: .env
+    environment:
+      MARIADB_ROOT_PASSWORD: $MARIADB_ROOT_PASSWORD
+      MARIADB_DATABASE: wordpress
+    container_name: employee_db
+  #Web
+  employee_wp:
+    depends_on:
+      - employee_db
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - 8096:80
+    restart: always
+    env_file: .env
+    environment:
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: employee_db
+      WORDPRESS_DB_USER: $MYSQL_USER
+      WORDPRESS_DB_PASSWORD: $MYSQL_PASSWORD
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'JETPACK_SIGNATURE__HTTPS_PORT', 0 );
+        define( 'MEDIA_TRASH', true );
+        define( 'EMPTY_TRASH_DAYS', 30); 
+        define( 'PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION', true );
+        define( 'DISALLOW_FILE_EDIT', true);
+        define( 'WPCF7_ADMIN_READ_CAPABILITY', 'manage_options' );
+        define( 'WPCF7_ADMIN_READ_WRITE_CAPABILITY', 'manage_options' );
+    container_name: employee_wp
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+  #PhpMyAdmin
+  employee_myadmin:
+    image: phpmyadmin:latest
+    container_name: employee_myadmin
+    restart: "no"
+    ports:
+      - 5016:80
+    environment:
+      PMA_HOST: employee_db
+      UPLOAD_LIMIT: 100M
+    depends_on:
+      - employee_db
+volumes:
+  db_data:
+  wp-content:

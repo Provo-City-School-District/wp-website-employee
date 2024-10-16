@@ -1,0 +1,71 @@
+
+.grid2 {
+    display: grid;
+    justify-items: center;
+}
+.grid2 ul .grid2 p {
+    margin:unset;
+}
+.grid3 {
+    display: grid;
+}
+.postList .grid3 .post:nth-child(odd) {
+    background-color: var(--odd-color);
+}
+.postList .grid3 .post:nth-child(even) {
+    background-color: var(--even-color)
+}
+
+@media only screen and (min-width: 600px) {
+    .postList .grid3 {
+        gap: unset;
+        max-width: 1500px;
+        margin: 0 auto;
+    }
+    .grid3 {
+        grid-template-columns: repeat(3, 1fr);
+        /* gap: 1em; */
+        justify-content: space-evenly;
+    }
+}
+
+@media (min-width:1000px) {
+    .grid2 {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+
+/* Image Lists Grid */
+
+.imageListGrid {
+    display: grid;
+    list-style: none;
+}
+
+.imageListGrid img {
+    height: 25px;
+    width: 25px;
+    margin-bottom: -10px;
+    margin-right: 1em;
+}
+
+.imageListGrid li {
+    padding: 1em;
+    margin: unset !important;
+}
+
+.imageListGrid li:nth-child(even) {
+    background-color: var(--even-color);
+}
+
+.imageListGrid li:nth-child(odd) {
+    background-color: var(--odd-color);
+}
+
+@media only screen and (min-width: 600px) {
+    .imageListGrid {
+        grid-template-columns: repeat(3, 1fr);
+
+    }
+}

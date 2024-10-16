@@ -1,0 +1,40 @@
+/*
+Department Tiles
+*/
+.departmentTiles {
+	position: relative;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr;
+	margin-top: -7px;
+}
+.departmentTiles .tile {
+	padding: 25px;
+}
+
+.departmentTiles .tile:nth-child(even) {
+	background-color: var(--even-color);
+}
+
+.departmentTiles .tile:nth-child(odd) {
+	background-color: var(--odd-color);
+}
+
+/*responsive styles*/
+
+@media only screen and (min-width: 900px) {
+	.mainTileContent {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.departmentTiles {
+		grid-template-columns: repeat(3, 1fr);
+	
+	}
+	
+
+	/* .currentPageContent {
+		max-height: 400px;
+		overflow-y: scroll;
+	} */
+}
