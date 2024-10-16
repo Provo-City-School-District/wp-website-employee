@@ -46,7 +46,7 @@ services:
     container_name: employee_myadmin
     restart: "no"
     ports:
-      - 5019:80
+      - 5020:80
     environment:
       PMA_HOST: employee_db
       UPLOAD_LIMIT: 100M
