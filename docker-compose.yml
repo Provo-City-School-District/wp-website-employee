@@ -12,6 +12,11 @@ services:
       MARIADB_ROOT_PASSWORD: $MARIADB_ROOT_PASSWORD
       MARIADB_DATABASE: wordpress
     container_name: employee_db
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://localhost:514"
+        tag: "employee_db"
   #Web
   employee_wp:
     depends_on:
@@ -41,6 +46,11 @@ services:
     container_name: employee_wp
     volumes:
       - ./wp-content:/var/www/html/wp-content
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://localhost:514"
+        tag: "employee_wp"
   #PhpMyAdmin
   employee_myadmin:
     image: phpmyadmin:latest
@@ -53,6 +63,11 @@ services:
       UPLOAD_LIMIT: 100M
     depends_on:
       - employee_db
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://localhost:514"
+        tag: "employee_myadmin"
 volumes:
   db_data:
   wp-content:
