@@ -36,7 +36,7 @@ function pcsd_scripts_styles()
 		)
 	)) {
 		wp_enqueue_style('front_page', get_template_directory_uri() . '/assets/css/frontpage-employee.css', array(), $theme_version, false);
-	}	
+	}
 	if (is_404()) {
 		wp_enqueue_script('404easterEgg');
 	}
@@ -52,50 +52,59 @@ function pcsd_scripts_styles()
 add_action('wp_enqueue_scripts', 'pcsd_scripts_styles', 9999);
 
 // Enable Featured Images
-add_theme_support( 'post-thumbnails' );
+add_theme_support('post-thumbnails');
 // Enable Dashboard Menus
-add_theme_support( 'menus' );
+add_theme_support('menus');
 // REMOVE WP EMOJI
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
+remove_action('admin_print_scripts', 'print_emoji_detection_script');
+remove_action('admin_print_styles', 'print_emoji_styles');
+
 /*==========================================================================================
 Includes
 ============================================================================================*/
 // include shortcodes
 include 'includes/shortcodes.php';
 
+
+
 /*==========================================================================================
 // Favicon
 ============================================================================================*/
-function pcsd_add_favicon(){ ?>
+function pcsd_add_favicon()
+{ ?>
 	<!-- Custom Favicons -->
-		<link rel="apple-touch-icon" sizes="180x180" href="//globalassets.provo.edu/image/favicons/public/apple-touch-icon.png">
-		<link rel="icon" type="image/png" href="https://globalassets.provo.edu/image/favicons/public/favicon-32x32.png" sizes="32x32">
-		<link rel="icon" type="image/png" href="https://globalassets.provo.edu/image/favicons/public/favicon-16x16.png" sizes="16x16">
-		<link rel="manifest" href="https://globalassets.provo.edu/image/favicons/public/manifest.json">
-		<link rel="mask-icon" href="https://globalassets.provo.edu/image/favicons/public/safari-pinned-tab.svg">
-	<?php }
+	<link rel="apple-touch-icon" sizes="180x180" href="//globalassets.provo.edu/image/favicons/public/apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="https://globalassets.provo.edu/image/favicons/public/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="https://globalassets.provo.edu/image/favicons/public/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="https://globalassets.provo.edu/image/favicons/public/manifest.json">
+	<link rel="mask-icon" href="https://globalassets.provo.edu/image/favicons/public/safari-pinned-tab.svg">
+<?php }
 //add the favicon link to the live site head
-add_action('wp_head','pcsd_add_favicon');
+add_action('wp_head', 'pcsd_add_favicon');
 //add the favicon to the login page
-add_action('login_head','pcsd_add_favicon');
+add_action('login_head', 'pcsd_add_favicon');
 /*==========================================================================================
 // custom Login Page
 ============================================================================================*/
-function my_custom_login() {
-echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('stylesheet_directory') . '/login/custom-login-styles.css" />';
+function my_custom_login()
+{
+	echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('stylesheet_directory') . '/login/custom-login-styles.css" />';
 }
 add_action('login_head', 'my_custom_login');
 
-function my_login_logo_url() {
-return get_bloginfo( 'url' );
+function my_login_logo_url()
+{
+	return get_bloginfo('url');
 }
-add_filter( 'login_headerurl', 'my_login_logo_url' );
+add_filter('login_headerurl', 'my_login_logo_url');
 
-function my_login_logo_url_title() {
-return 'Employee Support Website Beta';
+function my_login_logo_url_title()
+{
+	return 'Employee Support Website Beta';
 }
-add_filter( 'login_headertitle', 'my_login_logo_url_title' );
+add_filter('login_headertitle', 'my_login_logo_url_title');
 /*==========================================================================================
 block WordPress User Enumeration Scans
 ============================================================================================*/
@@ -104,7 +113,8 @@ if (!is_admin()) {
 	if (preg_match('/author=([0-9]*)/i', $_SERVER['QUERY_STRING'])) die();
 	add_filter('redirect_canonical', 'shapeSpace_check_enum', 10, 2);
 }
-function shapeSpace_check_enum($redirect, $request) {
+function shapeSpace_check_enum($redirect, $request)
+{
 	// permalink URL format
 	if (preg_match('/\?author=([0-9]*)(\/*)/i', $request)) die();
 	else return $redirect;
@@ -112,33 +122,36 @@ function shapeSpace_check_enum($redirect, $request) {
 //================================Display Modified Date on Dashboard for Posts===================================
 
 // Register Modified Date Column for both posts & pages
-function modified_column_register( $columns ) {
-	$columns['Modified'] = __( 'Modified Date', 'show_modified_date_in_admin_lists' );
+function modified_column_register($columns)
+{
+	$columns['Modified'] = __('Modified Date', 'show_modified_date_in_admin_lists');
 	return $columns;
 }
-add_filter( 'manage_posts_columns', 'modified_column_register' );
-add_filter( 'manage_pages_columns', 'modified_column_register' );
+add_filter('manage_posts_columns', 'modified_column_register');
+add_filter('manage_pages_columns', 'modified_column_register');
 
-function modified_column_display( $column_name, $post_id ) {
-	switch ( $column_name ) {
-	case 'Modified':
-		global $post;
-	       	echo '<p class="mod-date">';
-	       	echo '<em>'.get_the_modified_date().' '.get_the_modified_time().'</em><br />';
-			echo '<small>' . esc_html__( 'by ', 'show_modified_date_in_admin_lists' ) . '<strong>'.get_the_modified_author().'<strong></small>';
+function modified_column_display($column_name, $post_id)
+{
+	switch ($column_name) {
+		case 'Modified':
+			global $post;
+			echo '<p class="mod-date">';
+			echo '<em>' . get_the_modified_date() . ' ' . get_the_modified_time() . '</em><br />';
+			echo '<small>' . esc_html__('by ', 'show_modified_date_in_admin_lists') . '<strong>' . get_the_modified_author() . '<strong></small>';
 			echo '</p>';
-		break; // end all case breaks
+			break; // end all case breaks
 	}
 }
-add_action( 'manage_posts_custom_column', 'modified_column_display', 10, 2 );
-add_action( 'manage_pages_custom_column', 'modified_column_display', 10, 2 );
+add_action('manage_posts_custom_column', 'modified_column_display', 10, 2);
+add_action('manage_pages_custom_column', 'modified_column_display', 10, 2);
 
-function modified_column_register_sortable( $columns ) {
+function modified_column_register_sortable($columns)
+{
 	$columns['Modified'] = 'modified';
 	return $columns;
 }
-add_filter( 'manage_edit-post_sortable_columns', 'modified_column_register_sortable' );
-add_filter( 'manage_edit-page_sortable_columns', 'modified_column_register_sortable' );
+add_filter('manage_edit-post_sortable_columns', 'modified_column_register_sortable');
+add_filter('manage_edit-page_sortable_columns', 'modified_column_register_sortable');
 
 
 /*-------------------------------------------------------*/
@@ -146,107 +159,95 @@ add_filter( 'manage_edit-page_sortable_columns', 'modified_column_register_sorta
 /*-------------------------------------------------------*/
 //For Posts
 
-	//Add the Length column, next to the Title column:
+//Add the Length column, next to the Title column:
 
-add_filter('manage_post_posts_columns', function ( $columns )
-{
-    $_columns = [];
+add_filter('manage_post_posts_columns', function ($columns) {
+	$_columns = [];
 
-    foreach( (array) $columns as $key => $label )
-    {
-        $_columns[$key] = $label;
-        if( 'title' === $key )
-            $_columns['wpse_post_content_length'] = __( 'Length' );
-    }
-    return $_columns;
-} );
+	foreach ((array) $columns as $key => $label) {
+		$_columns[$key] = $label;
+		if ('title' === $key)
+			$_columns['wpse_post_content_length'] = __('Length');
+	}
+	return $_columns;
+});
 
-	//Fill that column with the post content length values:
+//Fill that column with the post content length values:
 
-add_action( 'manage_post_posts_custom_column', function ( $column_name, $post_id )
-{
-    if ( $column_name == 'wpse_post_content_length')
-        echo mb_strlen( get_post( $post_id )->post_content );
+add_action('manage_post_posts_custom_column', function ($column_name, $post_id) {
+	if ($column_name == 'wpse_post_content_length')
+		echo mb_strlen(get_post($post_id)->post_content);
+}, 10, 2);
 
-}, 10, 2 );
+//Make our Length column orderable:
 
-	//Make our Length column orderable:
+add_filter('manage_edit-post_sortable_columns', function ($columns) {
+	$columns['wpse_post_content_length'] = 'wpse_post_content_length';
+	return $columns;
+});
+//Finally we implement the ordering through the posts_orderby filter:
 
-add_filter( 'manage_edit-post_sortable_columns', function ( $columns )
-{
-  $columns['wpse_post_content_length'] = 'wpse_post_content_length';
-  return $columns;
-} );
-	//Finally we implement the ordering through the posts_orderby filter:
+add_filter('posts_orderby', function ($orderby, \WP_Query $q) {
+	$_orderby = $q->get('orderby');
+	$_order   = $q->get('order');
 
-add_filter( 'posts_orderby', function( $orderby, \WP_Query $q )
-{
-    $_orderby = $q->get( 'orderby' );
-    $_order   = $q->get( 'order' );
-
-    if(
-           is_admin()
-        && $q->is_main_query()
-        && 'wpse_post_content_length' === $_orderby
-        && in_array( strtolower( $_order ), [ 'asc', 'desc' ] )
-    ) {
-        global $wpdb;
-        $orderby = " LENGTH( {$wpdb->posts}.post_content ) " . $_order . " ";
-    }
-    return $orderby;
-}, 10, 2 );
+	if (
+		is_admin()
+		&& $q->is_main_query()
+		&& 'wpse_post_content_length' === $_orderby
+		&& in_array(strtolower($_order), ['asc', 'desc'])
+	) {
+		global $wpdb;
+		$orderby = " LENGTH( {$wpdb->posts}.post_content ) " . $_order . " ";
+	}
+	return $orderby;
+}, 10, 2);
 
 //For Pages
 
-	//Add the Length column, next to the Title column:
+//Add the Length column, next to the Title column:
 
-add_filter('manage_page_posts_columns', function ( $columns )
-{
-    $_columns = [];
+add_filter('manage_page_posts_columns', function ($columns) {
+	$_columns = [];
 
-    foreach( (array) $columns as $key => $label )
-    {
-        $_columns[$key] = $label;
-        if( 'title' === $key )
-            $_columns['wpse_post_content_length'] = __( 'Length' );
-    }
-    return $_columns;
-} );
+	foreach ((array) $columns as $key => $label) {
+		$_columns[$key] = $label;
+		if ('title' === $key)
+			$_columns['wpse_post_content_length'] = __('Length');
+	}
+	return $_columns;
+});
 
-	//Fill that column with the post content length values:
+//Fill that column with the post content length values:
 
-add_action( 'manage_page_posts_custom_column', function ( $column_name, $post_id )
-{
-    if ( $column_name == 'wpse_post_content_length')
-        echo mb_strlen( get_post( $post_id )->post_content );
+add_action('manage_page_posts_custom_column', function ($column_name, $post_id) {
+	if ($column_name == 'wpse_post_content_length')
+		echo mb_strlen(get_post($post_id)->post_content);
+}, 10, 2);
 
-}, 10, 2 );
+//Make our Length column orderable:
 
-	//Make our Length column orderable:
+add_filter('manage_edit-page_sortable_columns', function ($columns) {
+	$columns['wpse_post_content_length'] = 'wpse_post_content_length';
+	return $columns;
+});
+//Finally we implement the ordering through the posts_orderby filter:
 
-add_filter( 'manage_edit-page_sortable_columns', function ( $columns )
-{
-  $columns['wpse_post_content_length'] = 'wpse_post_content_length';
-  return $columns;
-} );
-	//Finally we implement the ordering through the posts_orderby filter:
+add_filter('posts_orderby', function ($orderby, \WP_Query $q) {
+	$_orderby = $q->get('orderby');
+	$_order   = $q->get('order');
 
-add_filter( 'posts_orderby', function( $orderby, \WP_Query $q )
-{
-    $_orderby = $q->get( 'orderby' );
-    $_order   = $q->get( 'order' );
-
-    if(
-           is_admin()
-        && $q->is_main_query()
-        && 'wpse_post_content_length' === $_orderby
-        && in_array( strtolower( $_order ), [ 'asc', 'desc' ] )
-    ) {
-        global $wpdb;
-        $orderby = " LENGTH( {$wpdb->posts}.post_content ) " . $_order . " ";
-    }
-    return $orderby;
-}, 10, 2 );
+	if (
+		is_admin()
+		&& $q->is_main_query()
+		&& 'wpse_post_content_length' === $_orderby
+		&& in_array(strtolower($_order), ['asc', 'desc'])
+	) {
+		global $wpdb;
+		$orderby = " LENGTH( {$wpdb->posts}.post_content ) " . $_order . " ";
+	}
+	return $orderby;
+}, 10, 2);
 //Notes
 
 //If you want to target other post types, than we just have to modify the
@@ -259,28 +260,29 @@ add_filter( 'posts_orderby', function( $orderby, \WP_Query $q )
 /*==========================================================================================
 post application approval forms
 ============================================================================================*/
-remove_all_filters ('wpcf7_before_send_mail');
-add_action('wpcf7_before_send_mail', 'my_wpcf7_save',1);
-function my_wpcf7_save($cfdata) {
+remove_all_filters('wpcf7_before_send_mail');
+add_action('wpcf7_before_send_mail', 'my_wpcf7_save', 1);
+function my_wpcf7_save($cfdata)
+{
 	$formtitle = $cfdata->title;
 	$formdata = $cfdata->posted_data;
-		if ( $formtitle == 'App Approval Form') {
+	if ($formtitle == 'App Approval Form') {
 
-			// create a new post
-			$newpost = array(
-				'post_title'  => $_POST['app-name'],
-				'post_type'   => 'approved_application',
-				'post_status' => 'draft'
-			);
+		// create a new post
+		$newpost = array(
+			'post_title'  => $_POST['app-name'],
+			'post_type'   => 'approved_application',
+			'post_status' => 'draft'
+		);
 
-			//Insert New Post
-			$newpostid = wp_insert_post($newpost);
-			add_post_meta($newpostid, 'submitter_name', $_POST['submitterName']);
-			add_post_meta($newpostid, 'submitter_email', $_POST['submitter-email']);
-			add_post_meta($newpostid, 'link_to_application', $_POST['url-659']);
-			add_post_meta($newpostid, 'description', $_POST['description']);
-			}
-		}
+		//Insert New Post
+		$newpostid = wp_insert_post($newpost);
+		add_post_meta($newpostid, 'submitter_name', $_POST['submitterName']);
+		add_post_meta($newpostid, 'submitter_email', $_POST['submitter-email']);
+		add_post_meta($newpostid, 'link_to_application', $_POST['url-659']);
+		add_post_meta($newpostid, 'description', $_POST['description']);
+	}
+}
 
 
 /*
@@ -288,9 +290,10 @@ function my_wpcf7_save($cfdata) {
 define allowed block types
 =============================================================================================
 */
-add_filter( 'allowed_block_types', 'pcsd_allowed_block_types' );
+add_filter('allowed_block_types', 'pcsd_allowed_block_types');
 
-function pcsd_allowed_block_types( $allowed_blocks ) {
+function pcsd_allowed_block_types($allowed_blocks)
+{
 
 	return array(
 		'core/paragraph',
@@ -368,20 +371,22 @@ function pcsd_allowed_block_types( $allowed_blocks ) {
 register or unregister block patterns
 =============================================================================================
 */
-function my_plugin_unregister_my_patterns() {
-	  remove_theme_support('core-block-patterns');
-	  unregister_block_pattern_category('columns');
-	  unregister_block_pattern_category('gallery');
-	  unregister_block_pattern_category('text');
-  }
-add_action( 'init', 'my_plugin_unregister_my_patterns' );
+function my_plugin_unregister_my_patterns()
+{
+	remove_theme_support('core-block-patterns');
+	unregister_block_pattern_category('columns');
+	unregister_block_pattern_category('gallery');
+	unregister_block_pattern_category('text');
+}
+add_action('init', 'my_plugin_unregister_my_patterns');
 // adds class .active to top menu item if the current active page is the page in the menu 
 // so that we can style that differently.
-add_filter('nav_menu_css_class' , 'special_nav_class' , 10 , 2);
+add_filter('nav_menu_css_class', 'special_nav_class', 10, 2);
 
-function special_nav_class ($classes, $item) {
-  if (in_array('current-menu-item', $classes) ){
-    $classes[] = 'active ';
-  }
-  return $classes;
+function special_nav_class($classes, $item)
+{
+	if (in_array('current-menu-item', $classes)) {
+		$classes[] = 'active ';
+	}
+	return $classes;
 }
