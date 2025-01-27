@@ -2,13 +2,21 @@
 	Theme Name: Employee Provo City School District 2017
 	Author: District Web Team
 	Author URI: https://employee.provo.edu/technology/
-	Version: 1.0.01
+	Version: 2.0.0
 */
 /* ==================================================================== */
 /* Utility Classes */
 /* ==================================================================== */
-.blt, .sidebar ul.blt{list-style: disc;}
-.blt li, .sidebar ul.blt li {margin-left: 20px;}
+.blt,
+.sidebar ul.blt {
+	list-style: disc;
+}
+
+.blt li,
+.sidebar ul.blt li {
+	margin-left: 20px;
+}
+
 /* Big Red Button  WO95925 */
 .bigRedButton {
 	border: 1px solid black;
@@ -18,11 +26,13 @@
 	border-radius: 5px;
 	margin: 1em;
 	background-color: red;
-	color:white
-  }
-  .bigRedButton:hover {
+	color: white
+}
+
+.bigRedButton:hover {
 	background-color: purple;
-  }
+}
+
 /*-----------------------------------------------------------------------------------------------
 Theme Specific coloring
 -----------------------------------------------------------------------------------------------*/
@@ -50,12 +60,16 @@ p#siteTitle {
 	background: transparent;
 	/* min-height: 78vh; */
 }
+
 .siteContainer {
 	max-width: 1550px;
 	margin: 0 auto;
 }
 
-.newsContainer {background:#fff}
+.newsContainer {
+	background: #fff
+}
+
 .sidebar {
 	background-color: #0d4834;
 }
