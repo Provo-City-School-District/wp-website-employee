@@ -403,11 +403,14 @@ function redirect_to_login_if_not_logged_in()
 add_action('template_redirect', 'redirect_to_login_if_not_logged_in');
 
 // Redirect to home page after login
+<?php
 function custom_login_redirect($redirect_to, $request, $user)
 {
-	if (isset($user->roles) && is_array($user->roles)) {
-		return home_url('/');
-	}
-	return $redirect_to;
+    if (isset($user->roles) && is_array($user->roles)) {
+        if (in_array('subscriber', $user->roles)) {
+            return home_url('/');
+        }
+    }
+    return $redirect_to;
 }
 add_filter('login_redirect', 'custom_login_redirect', 10, 3);
