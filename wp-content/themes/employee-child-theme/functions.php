@@ -406,7 +406,7 @@ add_action('template_redirect', 'redirect_to_login_if_not_logged_in');
 function custom_login_redirect($redirect_to, $request, $user)
 {
 	if (isset($user->roles) && is_array($user->roles)) {
-		if (in_array('subscriber', $user->roles)) {
+		if (in_array('subscriber', $user->roles) || empty($user->roles)) {
 			return home_url('/');
 		}
 	}
