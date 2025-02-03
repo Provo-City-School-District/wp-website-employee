@@ -390,3 +390,36 @@ function special_nav_class($classes, $item)
 	}
 	return $classes;
 }
+
+
+// Redirect to login page if not logged in
+function redirect_to_login_if_not_logged_in()
+{
+	if (!is_user_logged_in() && !is_admin() && !is_page('wp-login.php')) {
+		wp_redirect(wp_login_url());
+		exit;
+	}
+}
+add_action('template_redirect', 'redirect_to_login_if_not_logged_in');
+
+// Redirect to home page after login
+function custom_login_redirect($redirect_to, $request, $user)
+{
+	if (isset($user->roles) && is_array($user->roles)) {
+		if (in_array('subscriber', $user->roles)) {
+			return home_url('/');
+		}
+	} elseif (empty($user->roles)) {
+		return home_url('/');
+	}
+	return $redirect_to;
+}
+add_filter('login_redirect', 'custom_login_redirect', 10, 3);
+
+function redirect_subscribers_from_dashboard()
+{
+	if (current_user_can('subscriber')) {
+		wp_enqueue_script('redirect-subscribers', get_template_directory_uri() . '/js/redirect-subscribers.js', array(), null, true);
+	}
+}
+add_action('admin_enqueue_scripts', 'redirect_subscribers_from_dashboard');
