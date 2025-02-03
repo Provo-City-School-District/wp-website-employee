@@ -423,3 +423,23 @@ function redirect_subscribers_from_dashboard()
 	}
 }
 add_action('admin_enqueue_scripts', 'redirect_subscribers_from_dashboard');
+
+add_action('login_head', 'pcsd_emp_hide_login');
+function pcsd_emp_hide_login()
+{
+	$style = '';
+	$style .= '<style type="text/css">';
+	$style .= '.login form .user-pass-wrap{ display: none }';
+	$style .= '.login form .submit { display: none }';
+	$style .= '.login form .forgetmenot { display: none }';
+	$style .= '.login form .input { display: none }';
+	$style .= '.login form label { display: none }';
+	$style .= '.login  #nav { display: none }';
+	$style .= '.login  #mo_saml_button b { display: none }';
+	$style .= '#login {margin-top: 150px}';
+	$style .= '.wp_google_login { margin-top:unset; }';
+	$style .= '.wp_google_login__button-container { margin-top:unset; }';
+	$style .= '</style>';
+
+	echo $style;
+}
