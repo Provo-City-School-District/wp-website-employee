@@ -419,7 +419,7 @@ add_filter('login_redirect', 'custom_login_redirect', 10, 3);
 function redirect_subscribers_from_dashboard()
 {
 	if (current_user_can('subscriber')) {
-		wp_enqueue_script('redirect-subscribers', get_template_directory_uri() . '/js/redirect-subscribers.js', array(), null, true);
+		wp_enqueue_script('redirect-subscribers', get_template_directory_uri() . '/js/redirect-subscribers.js', array(), $theme_version, true);
 	}
 }
 add_action('admin_enqueue_scripts', 'redirect_subscribers_from_dashboard');
