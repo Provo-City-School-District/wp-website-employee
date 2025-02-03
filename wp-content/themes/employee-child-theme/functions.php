@@ -439,7 +439,7 @@ function pcsd_emp_hide_login()
 	$style .= '#login {margin-top: 150px}';
 	$style .= '.wp_google_login { margin-top:unset; }';
 	$style .= '.wp_google_login__button-container { margin-top:unset; }';
+	$style .= '#backtoblog { display: none }';
 	$style .= '</style>';
-
 	echo $style;
 }
