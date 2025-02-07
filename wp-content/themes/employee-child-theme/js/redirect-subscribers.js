@@ -18,7 +18,7 @@
     // Append the loading screen to the body
     document.body.appendChild(loadingScreen);
 
-    // Redirect to the home page
-    window.location.href = "/";
+    // Redirect to the requested page or home page
+    window.location.href = redirectData.url;
   }
 })();

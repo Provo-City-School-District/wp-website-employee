@@ -405,13 +405,22 @@ add_action('template_redirect', 'redirect_to_login_if_not_logged_in');
 // Redirect to home page after login
 function custom_login_redirect($redirect_to, $request, $user)
 {
+	// Check if the user has roles and is an array
 	if (isset($user->roles) && is_array($user->roles)) {
+		// Check if the user is a subscriber
 		if (in_array('subscriber', $user->roles)) {
+			// If a specific page was requested, redirect to that page
+			if (!empty($request)) {
+				return $request;
+			}
+			// Otherwise, redirect to the home page
 			return home_url('/');
 		}
 	} elseif (empty($user->roles)) {
+		// If the user has no roles, redirect to the home page
 		return home_url('/');
 	}
+	// Default redirect
 	return $redirect_to;
 }
 add_filter('login_redirect', 'custom_login_redirect', 10, 3);
@@ -419,7 +428,13 @@ add_filter('login_redirect', 'custom_login_redirect', 10, 3);
 function redirect_subscribers_from_dashboard()
 {
 	if (current_user_can('subscriber')) {
-		wp_enqueue_script('redirect-subscribers', get_template_directory_uri() . '/js/redirect-subscribers.js', array(), $theme_version, true);
+		global $pagenow;
+		$redirect_url = home_url('/');
+		if (isset($_SERVER['REQUEST_URI']) && $pagenow != 'index.php') {
+			$redirect_url = esc_url($_SERVER['REQUEST_URI']);
+		}
+		wp_enqueue_script('redirect-subscribers', get_template_directory_uri() . '/js/redirect-subscribers.js', array(), null, true);
+		wp_localize_script('redirect-subscribers', 'redirectData', array('url' => $redirect_url));
 	}
 }
 add_action('admin_enqueue_scripts', 'redirect_subscribers_from_dashboard');
