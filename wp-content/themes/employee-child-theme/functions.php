@@ -391,33 +391,27 @@ function special_nav_class($classes, $item)
 	return $classes;
 }
 
-
-// Redirect to login page if not logged in
+// Redirect to login page if not logged in and capture the requested URL
 function redirect_to_login_if_not_logged_in()
 {
 	if (!is_user_logged_in() && !is_admin() && !is_page('wp-login.php')) {
-		wp_redirect(wp_login_url());
+		$requested_url = esc_url($_SERVER['REQUEST_URI']);
+		wp_redirect(wp_login_url() . '?redirect_to=' . urlencode($requested_url));
 		exit;
 	}
 }
 add_action('template_redirect', 'redirect_to_login_if_not_logged_in');
 
-// Redirect to home page after login
+// Redirect to the requested URL after login, or to the home page if no specific URL was requested
 function custom_login_redirect($redirect_to, $request, $user)
 {
-	// Check if the user has roles and is an array
-	if (isset($user->roles) && is_array($user->roles)) {
-		// Check if the user is a subscriber
-		if (in_array('subscriber', $user->roles)) {
-			// If a specific page was requested, redirect to that page
-			if (!empty($request)) {
-				return $request;
-			}
-			// Otherwise, redirect to the home page
-			return home_url('/');
+	// Check if the user is logged in
+	if (is_user_logged_in()) {
+		// If a specific page was requested, redirect to that page
+		if (!empty($request)) {
+			return $request;
 		}
-	} elseif (empty($user->roles)) {
-		// If the user has no roles, redirect to the home page
+		// Otherwise, redirect to the home page
 		return home_url('/');
 	}
 	// Default redirect
